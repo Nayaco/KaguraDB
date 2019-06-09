@@ -1,7 +1,7 @@
 #ifndef TYPE_SPEC_HPP
 #define TYPE_SPEC_HPP
 
-#include "Errors/BaseLogger.hpp"
+#include "Errors/SQLError/SQLError.hpp"
 #include <cstring>
 #include <sstream>
 #include <string>
@@ -45,18 +45,20 @@ struct Attribute {
 
 struct Value {
     ValueType type;
-    size_t charlength;
-    int intval;
-    float floatval;
-    char charval[256];
-
+    size_t charLength;
+    union {
+        int intval;
+        float floatval;
+        char charval[256];
+    };
+    
     Value() = default;
     Value (const Attribute &attr)
-        : type(attr.type), charlength(attr.charLength) {}
+        : type(attr.type), charLength(attr.charLength) {}
     
     const char *val() const {
         switch (type) {
-         case ValueType::INT: {
+        case ValueType::INT: {
             return reinterpret_cast<const char*>(&intval);
         }
         case ValueType::FLOAT: {
@@ -73,7 +75,7 @@ struct Value {
 
     char *val(){
         switch (type) {
-         case ValueType::INT: {
+        case ValueType::INT: {
             return reinterpret_cast<char*>(&intval);
         }
         case ValueType::FLOAT: {
@@ -87,6 +89,132 @@ struct Value {
         }
         }
     }
+
+    size_t size() const {
+        switch (type) {
+        case ValueType::INT: {
+            return INT_SIZE;
+        }
+        case ValueType::FLOAT: {
+            return FLOAT_SIZE;
+        }
+        case ValueType::CHAR: {
+            return charLength * SINGLE_CHAR_SIZE;
+        }
+        case ValueType::NUL: {
+            return NUL_SIZE;
+        }
+        }
+    }
+
+    string toString() const {
+        stringstream ss;
+        switch (type) {
+        case ValueType::INT: {
+            ss<<"I"<<std::to_string(intval);
+        }
+        case ValueType::FLOAT: {
+            ss<<"F"<<std::to_string(floatval);
+        }
+        case ValueType::CHAR: {
+            ss<<"C("<<charLength<<")'"<<string(charval)<<'\'';
+        }
+        case ValueType::NUL: {
+            ss<<"NULL";
+        }
+        }
+        return ss.str();
+    }
+    
+    bool operator ==(const Value& rhs) const {
+        if (type == ValueType::NUL || rhs.type == ValueType::NUL)
+            throw SQLError("TypeError: Nullvalue comparison is not allowed");
+        if (type != rhs.type) {
+            throw SQLError("TypeError: Different types at sides of equal operator");
+        }
+        switch (type) {
+        case ValueType::INT: {
+            return intval == rhs.intval;
+        }
+        case ValueType::FLOAT: {
+            return floatval == rhs.floatval;
+        }
+        case ValueType::CHAR: {
+            return strcmp(charval, rhs.charval) == 0;
+        }
+        }
+    }
+
+    bool operator !=(const Value& rhs) const {
+        if (type == ValueType::NUL || rhs.type == ValueType::NUL)
+            throw SQLError("TypeError: Nullvalue comparison is not allowed");
+
+        if (type != rhs.type) {
+            throw SQLError("TypeError: Different types at sides of unequal operator");
+        }
+        return !(*this == rhs);
+    }
+
+    bool operator <(const Value& rhs) const {
+        if (type == ValueType::NUL || rhs.type == ValueType::NUL)
+            throw SQLError("TypeError: Nullvalue comparison is not allowed");
+
+        if (type != rhs.type) {
+            throw SQLError("TypeError: Different types at sides of less operator");
+        }
+        switch (type) {
+        case ValueType::INT: {
+            return intval < rhs.intval;
+        }
+        case ValueType::FLOAT: {
+            return floatval < rhs.floatval;
+        }
+        case ValueType::CHAR: {
+            return strcmp(charval, rhs.charval) < 0;
+        }
+        }
+    }
+
+    bool operator >(const Value& rhs) const {
+        if (type == ValueType::NUL || rhs.type == ValueType::NUL)
+            throw SQLError("TypeError: Nullvalue comparison is not allowed");
+
+        if (type != rhs.type) {
+            throw SQLError("TypeError: Different types at sides of greater operator");
+        }
+        switch (type) {
+        case ValueType::INT: {
+            return intval > rhs.intval;
+        }
+        case ValueType::FLOAT: {
+            return floatval > rhs.floatval;
+        }
+        case ValueType::CHAR: {
+            return strcmp(charval, rhs.charval) > 0;
+        }
+        }
+    }
+
+    bool operator <=(const Value& rhs) const {
+        if (type == ValueType::NUL || rhs.type == ValueType::NUL)
+            throw SQLError("TypeError: Nullvalue comparison is not allowed");
+
+        if (type != rhs.type) {
+            throw SQLError("TypeError: Different types at sides of less or equal operator");
+        }
+        return !(*this > rhs);
+    }
+
+    bool operator >=(const Value& rhs) const {
+        if (type == ValueType::NUL || rhs.type == ValueType::NUL)
+            throw SQLError("TypeError: Nullvalue comparison is not allowed");
+
+        if (type != rhs.type) {
+            throw SQLError("TypeError: Different types at sides of greater or equal operator");
+        }
+        return !(*this < rhs);
+    }
+
 };
 
 #endif
