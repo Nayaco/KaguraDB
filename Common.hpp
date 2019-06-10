@@ -8,6 +8,7 @@
 #include <string>
 #include <tuple>
 #include <map>
+#include <unordered_map>
 #include <list>
 
 #include <sstream>
@@ -25,6 +26,14 @@
 #include "Errors/InterpreterError/ParserError.hpp"
 #include "Errors/RuntimeError/RuntimeError.hpp"
 #include "Errors/CatalogError/CatalogError.hpp"
+
+using std::string;
+using std::map;
+using std::unordered_map;
+using std::list;
+using std::vector;
+using std::shared_ptr;
+using std::tuple;
 
 constexpr size_t BLOCK_SIZE = 4096;
 #endif

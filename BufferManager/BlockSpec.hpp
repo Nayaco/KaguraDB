@@ -4,7 +4,7 @@ namespace CS {
 #include "Common.hpp"
 
 enum class BlockState: int {
-    CLEAN, DIRTY, COLD
+    CLEAN, DIRTY, COLD, INIT
 };
 
 }

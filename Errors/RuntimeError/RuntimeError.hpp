@@ -8,7 +8,7 @@ enum class REType: unsigned int {
 };
 class RuntimeError: public BaseError {
     public:
-        explicit RuntimeError(const REType& type,const std::string& what)
+        explicit RuntimeError(const REType& type,const string& what)
             :BaseError(std::to_string(static_cast<unsigned int>(type)) + ":" + what) {};
 };
 #endif

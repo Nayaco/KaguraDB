@@ -6,9 +6,6 @@
 namespace CS {
 namespace FS {
 
-using std::vector;
-using std::string;
-using std::shared_ptr;
 using FilePool = std::vector<FILE*>;
 using FileBlockNum = std::vector<int>; 
 
@@ -37,8 +34,8 @@ public:
         return filePool[fid];
     }
     size_t allocBlock(int fid);
-    void writeBlock(int fid, size_t offset, char* data);
-    char* readBlock(int fid, size_t offset);
+    void writeBlock(int fid, size_t bOffset, char* data);
+    char* readBlock(int fid, size_t bOffset);
     int getBlockCnt(int fid) { 
         fidCheck(fid);
         return fileBlockCnt[fid];

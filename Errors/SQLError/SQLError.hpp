@@ -4,7 +4,7 @@
 
 class SQLError: public BaseError {
 public: 
-    explicit SQLError(const std::string &what_str)
+    explicit SQLError(const string &what_str)
         : BaseError("SQL Error: " + what_str) {}
 };
 

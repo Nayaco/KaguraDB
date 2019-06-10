@@ -2,7 +2,7 @@
 #define PARSER_ERROR_HPP
 #include "Errors/BaseLogger.hpp"
 
-inline std::string make_msg(const std::string &what_str, 
+inline string make_msg(const string &what_str, 
                                 const int l, const int c) {
     std::stringstream ss;
     if (l != -1 && c != -1) {
@@ -16,9 +16,9 @@ inline std::string make_msg(const std::string &what_str,
 
 class ParserError: public BaseError {
 public: 
-    explicit ParserError(const std::string& what_str)
+    explicit ParserError(const string& what_str)
         : BaseError(what_str){}
-    explicit ParserError(const std::string& what_str, const int l, const int c)
+    explicit ParserError(const string& what_str, const int l, const int c)
         : BaseError(make_msg(what_str, l, c)){}
 };
 

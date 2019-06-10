@@ -6,9 +6,8 @@
 #include "BufferManager/BlockSpec.hpp"
 namespace CS {
 
-using std::tuple;
-using std::shared_ptr;
 using FS::FileServiceInstance;
+
 using BlockUID = tuple<int, size_t>; // <fid, offset>
 inline BlockUID makeUID(const int fid, const size_t offset) {
     if(fid < 0 || offset < 0)
@@ -35,9 +34,10 @@ public:
     void setClean() { state = BlockState::CLEAN; }
     void setDirty() { state = BlockState::DIRTY; }
     void setCold() { state = BlockState::COLD; }
-    void read(const char* dest);
-    void write(const char* src);
+    void read(char *dest, size_t offset, size_t size);
+    void write(const char* src, size_t offset, size_t size);
     void sync();
+    void clear();
 };
 
 using BlockInstance = shared_ptr<Block>;

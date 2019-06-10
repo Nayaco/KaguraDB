@@ -11,7 +11,7 @@ void FileService::createFile(const char* filename) {
 }
 
 int FileService::openFile(const char* filename) {
-    FILE* fp = fopen(filename, "rb");
+    FILE* fp = fopen(filename, "ab");
     fpCheck(fp, "open", filename);
     filePool.emplace_back(fp);
     fseek(fp, 0, SEEK_END);
@@ -20,7 +20,7 @@ int FileService::openFile(const char* filename) {
 }
 
 int FileService::createOrOpenFile(const char* filename) {
-    FILE* fp = fopen(filename, "rb+");
+    FILE* fp = fopen(filename, "ab+");
     fpCheck(fp, "create or open", filename);
     filePool.emplace_back(fp);
     fseek(fp, 0, SEEK_END);
@@ -39,18 +39,18 @@ size_t FileService::allocBlock(int fid) {
     return offset / BLOCK_SIZE;
 }
 
-void FileService::writeBlock(int fid, size_t offset, char* data) {
+void FileService::writeBlock(int fid, size_t bOffset, char* data) {
     fidCheck(fid);
     FILE *fp = filePool[fid];
-    fseek(fp, offset * BLOCK_SIZE, SEEK_SET);
+    fseek(fp, bOffset * BLOCK_SIZE, SEEK_SET);
     fwrite(data, BLOCK_SIZE, 1, fp);
     fflush(fp);
 }
 
-char* FileService::readBlock(int fid, size_t offset) {
+char* FileService::readBlock(int fid, size_t bOffset) {
     fidCheck(fid);
     FILE *fp = filePool[fid];
-    fseek(fp, offset * BLOCK_SIZE, SEEK_SET);
+    fseek(fp, bOffset * BLOCK_SIZE, SEEK_SET);
     char* data = new char[BLOCK_SIZE];
     fread(data, BLOCK_SIZE, 1, fp);
     return data;
