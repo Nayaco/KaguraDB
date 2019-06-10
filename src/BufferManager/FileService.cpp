@@ -11,7 +11,7 @@ void FileService::createFile(const char* filename) {
 }
 
 int FileService::openFile(const char* filename) {
-    FILE* fp = fopen(filename, "ab");
+    FILE* fp = fopen(filename, "rb+");
     fpCheck(fp, "open", filename);
     filePool.emplace_back(fp);
     fseek(fp, 0, SEEK_END);
@@ -19,13 +19,32 @@ int FileService::openFile(const char* filename) {
     return (int)(filePool.size() - 1);
 }
 
-int FileService::createOrOpenFile(const char* filename) {
-    FILE* fp = fopen(filename, "ab+");
+tuple<int, bool> FileService::createOrOpenFile(const char* filename) {
+    bool fileExists = existsF(filename);
+    if(!fileExists) createFile(filename);
+    FILE* fp = fopen(filename, "rb+");
     fpCheck(fp, "create or open", filename);
     filePool.emplace_back(fp);
     fseek(fp, 0, SEEK_END);
     fileBlockCnt.push_back((int)ftell(fp) / BLOCK_SIZE);
-    return (int)(filePool.size() - 1);
+    return std::make_tuple((int)(filePool.size() - 1), fileExists);
+}
+
+void FileService::unlink(int fid, const char* filename) {
+    fclose(filePool[fid]);
+    remove(filename);
+    filePool[fid] = NULL;
+    fileBlockCnt[fid] = 0;
+}
+
+bool FileService::existsF(const char* filename) {
+    static struct stat statBuffer;
+    return (stat(filename, &statBuffer) == 0);
+}
+
+bool FileService::exists(int fid) {
+    fidCheck(fid);
+    return filePool[fid] != NULL;
 }
 
 size_t FileService::allocBlock(int fid) {
@@ -47,18 +66,16 @@ void FileService::writeBlock(int fid, size_t bOffset, char* data) {
     fflush(fp);
 }
 
-char* FileService::readBlock(int fid, size_t bOffset) {
+void FileService::readBlock(char* dest, int fid, size_t bOffset) {
     fidCheck(fid);
     FILE *fp = filePool[fid];
     fseek(fp, bOffset * BLOCK_SIZE, SEEK_SET);
-    char* data = new char[BLOCK_SIZE];
-    fread(data, BLOCK_SIZE, 1, fp);
-    return data;
+    fread(dest, BLOCK_SIZE, 1, fp);
 }
 
 FileService::~FileService() {
     for(auto& fp: filePool) {
-        fclose(fp);
+        if(fp != NULL) fclose(fp);
     }
 }
 

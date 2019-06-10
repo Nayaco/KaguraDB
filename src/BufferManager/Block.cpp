@@ -22,10 +22,21 @@ void Block::write(const char* src, size_t offset, size_t size) {
 }
 
 void Block::sync() {
-    if (isDirty()) {
-        fsInstance->writeBlock(fid, offset, blockCache);
+    if (state==BlockState::INIT) {
+        fsInstance->readBlock(blockCache, fid, offset);
         setClean();
+        return;
     }
+    // printf("%d", )
+    if(fsInstance->getBlockCnt(fid) <= offset) {
+        if(fsInstance->getBlockCnt(fid) == offset) {
+            fsInstance->allocBlock(fid);
+        } else {
+            throw SQLError("Block Error: offset out of range");
+        }
+    }
+    fsInstance->writeBlock(fid, offset, blockCache);
+    setClean();
 }
 
 void Block::clear() {

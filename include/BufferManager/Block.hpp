@@ -31,9 +31,11 @@ public:
     bool isClean() const { return state == BlockState::CLEAN; }
     bool isDirty() const { return state == BlockState::DIRTY; }
     bool isCold() const { return state == BlockState::COLD; }
+    bool isDel() const { return state == BlockState::DELETED; }
     void setClean() { state = BlockState::CLEAN; }
     void setDirty() { state = BlockState::DIRTY; }
     void setCold() { state = BlockState::COLD; }
+    void setDel() { state = BlockState::DELETED; }
     void read(char *dest, size_t offset, size_t size);
     void write(const char* src, size_t offset, size_t size);
     void sync();

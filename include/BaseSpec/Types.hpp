@@ -1,13 +1,7 @@
 #ifndef TYPE_SPEC_HPP
 #define TYPE_SPEC_HPP
 
-#include "Errors/SQLError/SQLError.hpp"
-#include <cstring>
-#include <sstream>
-#include <string>
-#include <vector>
-
-using namespace std;
+#include "Common.hpp"
 
 constexpr size_t INT_SIZE = sizeof(int);
 constexpr size_t FLOAT_SIZE = sizeof(float);
@@ -17,7 +11,7 @@ enum class ValueType: int{
     INT         = 0,
     FLOAT       = 1,
     CHAR        = 2,
-    NUL        = 3
+    NUL         = 3
 };
 
 struct Attribute {
@@ -108,7 +102,7 @@ struct Value {
     }
 
     string toString() const {
-        stringstream ss;
+        std::stringstream ss;
         switch (type) {
         case ValueType::INT: {
             ss<<"I"<<std::to_string(intval);

@@ -1,21 +1,25 @@
 #ifndef BM_BUFFER_MANAGER_HPP
 #define BM_BUFFER_MANAGER_HPP
 #include "Common.hpp"
+#include "BaseSpec/Files.hpp"
 #include "BufferManager/FileService.hpp"
 #include "BufferManager/BlockSpec.hpp"
 #include "BufferManager/Block.hpp"
 
 namespace CS {
-
+using namespace FSpec;
 using FS::FileServiceInstance;
+using BufferUID = tuple<string, int>;
+inline BufferUID makeUID(string setName, int offset) {
+    return std::make_tuple(setName, offset);
+}
+
 class BufferManager { // LRU
-    int blockCnt = 0;
+    static const int CACHE_SIZE = 1024;
+    int blockCnt;
     FileServiceInstance fsInstance;
     list<BlockInstance> cache;
     map<string, int> fileTable;
-    void deleteFile(const string& filename);
-    bool fileExists(const string& filename);
-    int createFile(const string& filename);
 public:
     BufferManager(const BufferManager&) = delete;
     BufferManager& operator= (const BufferManager&) = delete;
@@ -23,10 +27,11 @@ public:
     explicit BufferManager(const FileServiceInstance&);
     ~BufferManager();
     
-    void createBlockSet(const string& setName);
+    void createBlockSet(const string& setName, const FileType type);
     void deleteBlockSet(const string& setName);
     void synchronize();
-    BlockInstance getBlock(BlockUID);
+    void maintain();
+    BlockInstance getBlock(const BufferUID&);
 };
 
 using BufferInstance = shared_ptr<BufferManager>;
