@@ -1,9 +1,15 @@
 #include "CatalogManager/CatalogManager.hpp"
 
 namespace CM {
-using namespace std;
-CatalogManager::CatalogManager(const BufferInstance& _bufferInstance)
-    : bufferInstance(_bufferInstance) {
+static unordered_map<string, int> schemaOffsets;
+static unordered_map<string, int> indexOffsets;
+static unordered_map<string, string> schemaToIndex;
+
+FSpec::Meta::CatalogHeader cHeader;
+int tailSchema;
+int tailIndex;
+
+void init() {
     schemas.clear();
     indices.clear();
     schemaOffsets.clear();
@@ -11,8 +17,8 @@ CatalogManager::CatalogManager(const BufferInstance& _bufferInstance)
     schemaToIndex.clear();
 
     auto catalogName = FSpec::genCatalogName();
-    bufferInstance->createBlockSet(catalogName, FileType::CATALOG);
-    auto blk_0 = bufferInstance->getBlock(makeUID(catalogName, 0));
+    CS::createBlockSet(catalogName, FileType::CATALOG);
+    auto blk_0 = CS::getBlock(makeUID(catalogName, 0));
     blk_0->read(reinterpret_cast<char*>(&cHeader), 0, sizeof(cHeader));
     int tOfs = cHeader.tableOffset;
     
@@ -20,7 +26,7 @@ CatalogManager::CatalogManager(const BufferInstance& _bufferInstance)
     FSpec::BlockStruct::ShemaBlock* schemablk = new FSpec::BlockStruct::ShemaBlock { };
     while(tOfs != 0) {
         tailSchema = tOfs;
-        auto blk = bufferInstance->getBlock(makeUID(catalogName, tOfs));
+        auto blk = CS::getBlock(makeUID(catalogName, tOfs));
         auto schemaInstance = std::make_shared<Schema>();
         auto innerOffset = 0;
         blk->read(reinterpret_cast<char*>(schemablk),
@@ -53,13 +59,13 @@ CatalogManager::CatalogManager(const BufferInstance& _bufferInstance)
     delete attributeblk;
 }
     
-CatalogManager::~CatalogManager() { }
+void exit() { }
 
-bool CatalogManager::hasSchema(const string& tableName) {
+bool hasSchema(const string& tableName) {
     return schemas.find(tableName) != schemas.end();
 }
 
-void CatalogManager::createTable(const string& tableName, const string& pk, 
+void createTable(const string& tableName, const string& pk, 
             const vector<Attribute> &attrs) {
     if (hasSchema(tableName)) {
         throw SQLError("Catalog Error: create table failed, schema exists");
@@ -80,8 +86,8 @@ void CatalogManager::createTable(const string& tableName, const string& pk,
     auto writestr = [](const char* src, char* dest) { memcpy(dest, src, 64); };
     auto catalogName = FSpec::genCatalogName();
     uint32_t tOfs = cHeader.blockNum;
-    auto tailblk = bufferInstance->getBlock(makeUID(catalogName, tailSchema));
-    auto blk = bufferInstance->getBlock(makeUID(catalogName, tOfs));
+    auto tailblk = CS::getBlock(makeUID(catalogName, tailSchema));
+    auto blk = CS::getBlock(makeUID(catalogName, tOfs));
     
     FSpec::BlockStruct::ShemaBlock tailSchemablk;
     FSpec::BlockStruct::ShemaBlock schemablk;
@@ -112,19 +118,19 @@ void CatalogManager::createTable(const string& tableName, const string& pk,
 
     tailblk->write(reinterpret_cast<char*>(&tailSchemablk), 0, SCHEMA_BLOCK_SIZE);
     
-    auto blk_0 = bufferInstance->getBlock(makeUID(catalogName, 0));
+    auto blk_0 = CS::getBlock(makeUID(catalogName, 0));
     cHeader.blockNum += 1;
     if(cHeader.tableOffset == 0) cHeader.tableOffset = tOfs;
     blk_0->write(reinterpret_cast<char*>(&cHeader), 0, sizeof(cHeader));
 }
 
-void CatalogManager::dropTable(const string& tableName) {
+void dropTable(const string& tableName) {
     if (hasSchema(tableName)) {
         throw SQLError("Catalog Error: create table failed, schema exists");
     }
     auto catalogName = FSpec::genCatalogName();
     auto tOfs = schemaOffsets[tableName];
-    auto blk = bufferInstance->getBlock(makeUID(catalogName, tOfs));
+    auto blk = CS::getBlock(makeUID(catalogName, tOfs));
     FSpec::BlockStruct::ShemaBlock schemablk;
     blk->read(reinterpret_cast<char*>(&schemablk), 0, SCHEMA_BLOCK_SIZE);
     schemablk.nextOfs |= DELETED_MARK;

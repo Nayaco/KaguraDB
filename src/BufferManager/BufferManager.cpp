@@ -1,22 +1,30 @@
 #include "BufferManager/BufferManager.hpp"
 namespace CS {
 
-BufferManager::BufferManager(const FileServiceInstance& fsInstance)
-    : fsInstance(fsInstance), blockCnt(0) { 
+static int blockCnt;
+static list<BlockInstance> cache;
+static map<string, int> fileTable;
+
+void init() { 
+    blockCnt = 0;
     cache.clear(); 
     fileTable.clear();
 }
 
-BufferManager::~BufferManager() {
-    synchronize();
+void exit() {
+    for(auto iter = cache.begin(); iter != cache.end(); ++iter) {
+        if((*iter)->isDirty()) {
+            (*iter)->sync();
+        }
+    }
 }
 
-void BufferManager::createBlockSet(const string& setName, const FileType type){
+void createBlockSet(const string& setName, const FileType type){
     maintain();
     int fid; bool exists;
-    std::tie(fid, exists) = fsInstance->createOrOpenFile(setName.c_str());
+    std::tie(fid, exists) = FS::createOrOpenFile(setName.c_str());
     fileTable[setName] = fid;
-    auto blkInstance = new Block(makeUID(fid, 0), fsInstance);
+    auto blkInstance = std::make_shared<Block>(makeUID(fid, 0));
     if(exists) { 
         blkInstance->sync();
         cache.emplace_back(blkInstance);
@@ -63,7 +71,7 @@ void BufferManager::createBlockSet(const string& setName, const FileType type){
     blockCnt++;
 }
 
-void BufferManager::deleteBlockSet(const string& setName) {
+void deleteBlockSet(const string& setName) {
     auto fid = fileTable[setName];
     for(auto iter = cache.begin(); iter != cache.end(); ++iter) {
         auto blk = *iter;
@@ -72,22 +80,22 @@ void BufferManager::deleteBlockSet(const string& setName) {
         }
     }
     synchronize();
-    fsInstance->unlink(fid, setName.c_str());
+    FS::unlink(fid, setName.c_str());
 }
 
-void BufferManager::synchronize() {
-    for(auto iter = cache.rbegin(); iter != cache.rend(); ++iter) {
+void synchronize() {
+    for(auto iter = cache.begin(); iter != cache.end(); ++iter) {
         auto blk = *iter;
         if(blk->isDirty()) {
             blk->sync();
         }
         if(blk->isDel()) {
-            cache.erase(std::next(iter).base());
+            cache.erase(iter);
         }
     }
 }
 
-void BufferManager::maintain() {
+void maintain() {
     while (cache.size() >= CACHE_SIZE) {
         for(auto iter = cache.rbegin(); iter != cache.rend(); ++iter) {
             auto blk = *iter;
@@ -103,11 +111,11 @@ void BufferManager::maintain() {
     }
 }
 
-BlockInstance BufferManager::getBlock(const BufferUID& bufferUID) {
+BlockInstance getBlock(const BufferUID& bufferUID) {
     auto filename = std::get<0>(bufferUID);
     bool exists;
     if(fileTable.find(filename) == fileTable.end()) {
-        std::tie(fileTable[filename], exists) = fsInstance->createOrOpenFile(filename.c_str());
+        std::tie(fileTable[filename], exists) = FS::createOrOpenFile(filename.c_str());
     }
     auto fid = fileTable[std::get<0>(bufferUID)];
     auto ofs = std::get<1>(bufferUID);
@@ -120,7 +128,7 @@ BlockInstance BufferManager::getBlock(const BufferUID& bufferUID) {
         }
     }
     maintain();
-    auto blkInstance = new Block(makeUID(fid, ofs), fsInstance);
+    auto blkInstance = std::make_shared<Block>(makeUID(fid, ofs));
     blkInstance->sync();
     cache.push_front(blkInstance);
     return blkInstance;

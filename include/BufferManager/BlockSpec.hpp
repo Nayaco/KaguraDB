@@ -6,7 +6,5 @@ namespace CS {
 enum class BlockState: int {
     CLEAN, DIRTY, COLD, INIT, DELETED
 };
-
 }
-
 #endif

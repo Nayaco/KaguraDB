@@ -5,10 +5,8 @@
 #include "BufferManager/FileService.hpp"
 #include "BufferManager/BlockSpec.hpp"
 namespace CS {
-
-using FS::FileServiceInstance;
-
 using BlockUID = tuple<int, size_t>; // <fid, offset>
+
 inline BlockUID makeUID(const int fid, const size_t offset) {
     if(fid < 0 || offset < 0)
         throw BufferError("Block Error: Illegal fid or offset");
@@ -20,12 +18,13 @@ private:
     int fid;
     size_t offset;
     BlockState state;
-    FileServiceInstance fsInstance;
     char blockCache[BLOCK_SIZE];
 public:
     Block(const Block&) = delete;
     Block operator=(const Block&) = delete;
-    explicit Block(const BlockUID&, const FileServiceInstance&);
+    
+    explicit Block(const BlockUID&);
+    ~Block() = default;
     const int getFid() const { return fid; }
     const size_t getOffset() const { return offset; }
     bool isClean() const { return state == BlockState::CLEAN; }

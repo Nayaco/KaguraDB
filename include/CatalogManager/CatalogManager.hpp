@@ -8,53 +8,32 @@
 namespace CM {
 
 using SchemaInstance = shared_ptr<Schema>;
-using CMAP = unordered_map<string, SchemaInstance>;
-using IMAP = unordered_map<string, Index>;
-
-using COFS = unordered_map<string, int>;
-using IOFS = unordered_map<string, int>;
-using CMAPI = unordered_map<string, string>;
 
 using namespace CS;
-class CatalogManager {
-    CMAP schemas;
-    IMAP indices;
-    
-    COFS schemaOffsets;
-    IOFS indexOffsets;
-    
-    CMAPI schemaToIndex;
 
-    BufferInstance bufferInstance;
-    FSpec::Meta::CatalogHeader cHeader;
-    int tailSchema;
-    int tailIndex;
-public:
-    CatalogManager(const CatalogManager&) = delete;
-    CatalogManager& operator= (const CatalogManager&) = delete;
-    
-    explicit CatalogManager(const BufferInstance&);
-    ~CatalogManager();
-    void createTable(const string& tableName, const string& pk, 
-                const vector<Attribute> &attrs);
-    void dropTable(const string&);
+static unordered_map<string, SchemaInstance> schemas;
+static unordered_map<string, Index> indices;
+   
+void init();
+void exit();
 
-    void createIndex(const string& indexName, const string& tableName, 
-                const string& key);
-    void dropIndex(const string&);
+void createTable(const string& tableName, const string& pk, 
+            const vector<Attribute> &attrs);
+void dropTable(const string&);
 
-    bool checkPredicates(const string& tableName, 
-                const vector<Predicate>& predicates);
+void createIndex(const string& indexName, const string& tableName, 
+            const string& key);
+void dropIndex(const string&);
 
-    bool hasSchema(const string& tableName);
+bool checkPredicates(const string& tableName, 
+            const vector<Predicate>& predicates);
 
-    bool hasIndex(const string& tableName,
-                 const string& attribute);
+bool hasSchema(const string& tableName);
 
-    SchemaInstance getSchema(const string& tableName);
-    
-};
+bool hasIndex(const string& tableName,
+                const string& attribute);
 
+SchemaInstance getSchema(const string& tableName);
 
 }
 #endif
