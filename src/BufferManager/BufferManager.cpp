@@ -15,10 +15,8 @@ void BufferManager::createBlockSet(const string& setName, const FileType type){
     maintain();
     int fid; bool exists;
     std::tie(fid, exists) = fsInstance->createOrOpenFile(setName.c_str());
-    // using namespace std;
-    // cout<<fid<<endl;
     fileTable[setName] = fid;
-    auto blkInstance = std::make_shared<Block>(makeUID(fid, 0), fsInstance);
+    auto blkInstance = new Block(makeUID(fid, 0), fsInstance);
     if(exists) { 
         blkInstance->sync();
         cache.emplace_back(blkInstance);
@@ -122,7 +120,7 @@ BlockInstance BufferManager::getBlock(const BufferUID& bufferUID) {
         }
     }
     maintain();
-    auto blkInstance = std::make_shared<Block>(makeUID(fid, ofs), fsInstance);
+    auto blkInstance = new Block(makeUID(fid, ofs), fsInstance);
     blkInstance->sync();
     cache.push_front(blkInstance);
     return blkInstance;

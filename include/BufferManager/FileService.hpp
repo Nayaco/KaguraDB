@@ -45,7 +45,7 @@ public:
     }
     ~FileService();
 };
-using FileServiceInstance = shared_ptr<FileService>;
+using FileServiceInstance = FileService*;
 }
 }
 

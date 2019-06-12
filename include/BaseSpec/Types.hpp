@@ -8,17 +8,17 @@ constexpr size_t FLOAT_SIZE = sizeof(float);
 constexpr size_t SINGLE_CHAR_SIZE = sizeof(char);
 constexpr size_t NUL_SIZE = 0;
 enum class ValueType: int{
-    INT         = 0,
-    FLOAT       = 1,
-    CHAR        = 2,
-    NUL         = 3
+    INT         = 1,
+    FLOAT       = 2,
+    CHAR        = 4,
+    NUL         = 0
 };
 
 struct Attribute {
     ValueType   type;
     size_t      charLength;
     bool        unique;
-    std::string name;
+    string name;
     size_t size() const {
         switch (type) {
         case ValueType::INT: {

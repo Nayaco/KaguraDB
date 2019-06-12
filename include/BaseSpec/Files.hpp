@@ -4,9 +4,9 @@
 namespace FSpec {
 
 enum class FileType: uint32_t {
-    INDEX       = 0x10101010,
-    CATALOG     = 0x20202020,
-    TABLE       = 0x30303030
+    INDEX       = 0x1F7F,
+    CATALOG     = 0x3C7F,
+    TABLE       = 0x3C6A
 };
 
 #define DELETED_MARK  0x80000000U
@@ -41,6 +41,23 @@ struct IndexHeader {
     uint32_t blockNum;
     uint32_t rootOffset;
     uint32_t blockOffset;
+};
+}
+
+namespace BlockStruct {
+#define SCHEMA_BLOCK_SIZE       148
+#define ATTRIBUTE_BLOCK_SIZE    68 
+
+struct ShemaBlock {
+    uint32_t nextOfs;
+    uint32_t attrNum;
+    char     schemaName[64];
+    char     pk[64];
+};
+
+struct AttributeBlock {
+    char     name[64];
+    uint32_t properties;
 };
 
 }

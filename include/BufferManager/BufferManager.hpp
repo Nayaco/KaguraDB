@@ -34,7 +34,7 @@ public:
     BlockInstance getBlock(const BufferUID&);
 };
 
-using BufferInstance = shared_ptr<BufferManager>;
+using BufferInstance = BufferManager*;
 
 }
 #endif

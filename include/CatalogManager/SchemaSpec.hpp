@@ -5,6 +5,7 @@
 namespace CM {
 constexpr size_t NAME_LENGTH = 64;
 
+#define TYPE_MASK 0x0F00
 #define INT_T   0x0100
 #define FLOAT_T 0x0200
 #define CHAR_T  0x0400
@@ -12,7 +13,7 @@ constexpr size_t NAME_LENGTH = 64;
 #define UNIQUE_T 0x1000
 
 uint32_t encodeProperties(const Attribute& attr);
-tuple<ValueType, int, bool> decodeProperties(uint32_t);
+tuple<ValueType, size_t, bool> decodeProperties(uint32_t);
 
 }
 
