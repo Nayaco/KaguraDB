@@ -7,13 +7,10 @@
 #include "CatalogManager/SchemaSpec.hpp" 
 namespace CM {
 
-using SchemaInstance = shared_ptr<Schema>;
-
 using namespace CS;
+extern unordered_map<string, SchemaInstance> schemas;
+extern unordered_map<string, Index> indices;
 
-static unordered_map<string, SchemaInstance> schemas;
-static unordered_map<string, Index> indices;
-   
 void init();
 void exit();
 

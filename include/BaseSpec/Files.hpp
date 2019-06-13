@@ -20,7 +20,6 @@ namespace Meta {
 struct CatalogHeader {
     uint32_t filetype;
     uint32_t blockNum;
-    uint32_t rootOffset;
     uint32_t startOffset;
     uint32_t blockOffset;
     uint32_t tableOffset;
@@ -30,10 +29,9 @@ struct CatalogHeader {
 struct TableHeader {
     uint32_t filetype;
     uint32_t blockNum;
-    uint32_t rootOffset;
+    uint32_t recordNum;
     uint32_t startOffset;
     uint32_t blockOffset;
-    uint32_t recordNum;
 };
 
 struct IndexHeader {
@@ -42,24 +40,6 @@ struct IndexHeader {
     uint32_t rootOffset;
     uint32_t blockOffset;
 };
-}
-
-namespace BlockStruct {
-#define SCHEMA_BLOCK_SIZE       148
-#define ATTRIBUTE_BLOCK_SIZE    68 
-
-struct ShemaBlock {
-    uint32_t nextOfs;
-    uint32_t attrNum;
-    char     schemaName[64];
-    char     pk[64];
-};
-
-struct AttributeBlock {
-    char     name[64];
-    uint32_t properties;
-};
-
 }
 
 }

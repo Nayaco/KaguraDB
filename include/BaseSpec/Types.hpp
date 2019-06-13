@@ -35,6 +35,26 @@ struct Attribute {
         }
         }
     }
+    string toString() {
+        std::stringstream ss;
+        ss<<name<<" ";
+        switch (type) {
+        case ValueType::INT: {
+            ss<<"INT"<<" ";
+            break;
+        }
+        case ValueType::FLOAT: {
+            ss<<"FLOAT"<<" ";
+            break;
+        }
+        case ValueType::CHAR: {
+            ss<<"CHAR("<<charLength<<")"<<" ";
+            break;
+        }
+        }
+        ss<<(unique?"UNIQUE":"DUNPLICATABLE")<<"\n";
+        return ss.str();
+    }
 };
 
 struct Value {
@@ -106,15 +126,19 @@ struct Value {
         switch (type) {
         case ValueType::INT: {
             ss<<"I"<<std::to_string(intval);
+            break;
         }
         case ValueType::FLOAT: {
             ss<<"F"<<std::to_string(floatval);
+            break;
         }
         case ValueType::CHAR: {
             ss<<"C("<<charLength<<")'"<<string(charval)<<'\'';
+            break;
         }
         case ValueType::NUL: {
             ss<<"NULL";
+            break;
         }
         }
         return ss.str();

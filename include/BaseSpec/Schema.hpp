@@ -1,11 +1,8 @@
 #ifndef SCHEMA_HPP
 #define SCHEMA_HPP
-#include <string>
-#include <vector>
+#include "Common.hpp"
 #include "BaseSpec/Types.hpp"
 #include "BaseSpec/Op.hpp"
-using std::string;
-using std::vector;
 
 struct Predicate {
     string attrName;
@@ -25,6 +22,7 @@ struct Index {
     string attrName;
 };
 
-using Record = std::vector<Value>;
+using Record = vector<Value>;
+using SchemaInstance = shared_ptr<Schema>;
 
 #endif

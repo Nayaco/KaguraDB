@@ -8,12 +8,7 @@
 
 namespace CS {
 using namespace FSpec;
-using BufferUID = tuple<string, int>;
 static const int CACHE_SIZE = 1024;
-
-inline BufferUID makeUID(string setName, int offset) {
-    return std::make_tuple(setName, offset);
-}
 
 void init();
 void exit();
@@ -22,8 +17,9 @@ void createBlockSet(const string& setName, const FileType type);
 void deleteBlockSet(const string& setName);
 void synchronize();
 void maintain();
-BlockInstance getBlock(const BufferUID&);
-
-
+BlockInstance getBlock(const BlockUID&);
+BlockInstance setBlock(const BlockUID& blockUID,
+            const char* _src, const size_t _offset, const size_t _size);
+BlockInstance setBlock(const BlockUID& blockUID);
 }
 #endif

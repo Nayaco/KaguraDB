@@ -5,17 +5,11 @@
 #include "BufferManager/FileService.hpp"
 #include "BufferManager/BlockSpec.hpp"
 namespace CS {
-using BlockUID = tuple<int, size_t>; // <fid, offset>
 
-inline BlockUID makeUID(const int fid, const size_t offset) {
-    if(fid < 0 || offset < 0)
-        throw BufferError("Block Error: Illegal fid or offset");
-    return std::make_tuple(fid, offset);
-}
 
 class Block {
 private:
-    int fid;
+    string filename;
     size_t offset;
     BlockState state;
     char blockCache[BLOCK_SIZE];
@@ -25,7 +19,7 @@ public:
     
     explicit Block(const BlockUID&);
     ~Block() = default;
-    const int getFid() const { return fid; }
+    const string getFilename() const { return filename; }
     const size_t getOffset() const { return offset; }
     bool isClean() const { return state == BlockState::CLEAN; }
     bool isDirty() const { return state == BlockState::DIRTY; }
@@ -35,9 +29,10 @@ public:
     void setDirty() { state = BlockState::DIRTY; }
     void setCold() { state = BlockState::COLD; }
     void setDel() { state = BlockState::DELETED; }
-    void read(char *dest, size_t offset, size_t size);
-    void write(const char* src, size_t offset, size_t size);
-    void sync();
+    void read(char *_dest, size_t _offset, size_t _size);
+    void write(const char* _src, size_t _offset, size_t _size);
+    void sync(bool syncDisk);
+    void createFile();
     void clear();
 };
 

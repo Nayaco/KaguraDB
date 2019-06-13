@@ -3,39 +3,36 @@
 namespace CS {
 
 Block::Block(const BlockUID& blockUID)
-    : fid(std::get<0>(blockUID)), offset(std::get<1>(blockUID)), state(BlockState::INIT) {
+    : filename(std::get<0>(blockUID)), offset(std::get<1>(blockUID)), state(BlockState::INIT) {
     memset(blockCache, 0, BLOCK_SIZE);
 }
 
-void Block::read(char* dest, size_t offset, size_t size) {
-    if(size + offset > BLOCK_SIZE) 
+void Block::read(char* _dest, size_t _offset, size_t _size) {
+    if(_size + _offset > BLOCK_SIZE) 
         throw SQLError("Block Error: out of block bound");
-    memcpy((void*)dest, (void*)(blockCache + offset), size);
+    memcpy(_dest, (blockCache + _offset), _size);
 }
 
-void Block::write(const char* src, size_t offset, size_t size) {
-    if(size + offset > BLOCK_SIZE) 
+void Block::write(const char* _src, size_t _offset, size_t _size) {
+    if(_size + _offset > BLOCK_SIZE) 
         throw SQLError("Block Error: out of block bound"); 
-    memcpy((void*)(blockCache + offset), (void*)src, size);
+    memcpy((void*)(blockCache + _offset), (void*)_src, _size);
     setDirty();
 }
 
-void Block::sync() {
-    if (state==BlockState::INIT) {
-        FS::readBlock(blockCache, fid, offset);
-        setClean();
-        return;
-    }
-    // printf("%d", )
-    if(FS::getBlockCnt(fid) <= offset) {
-        if(FS::getBlockCnt(fid) == offset) {
-            FS::allocBlock(fid);
-        } else {
-            throw SQLError("Block Error: offset out of range");
-        }
-    }
-    FS::writeBlock(fid, offset, blockCache);
+void Block::sync(bool syncDisk) {
+    if (!syncDisk)
+        FS::readBlock(blockCache, filename.c_str(), offset);
+    else
+        FS::writeBlock(filename.c_str(), offset, blockCache);
     setClean();
+}
+
+void Block::createFile() {
+    if (FS::exists(filename.c_str())) {
+        throw SQLError("Block Error: file exists");
+    }
+    FS::createFile(filename.c_str());
 }
 
 void Block::clear() {

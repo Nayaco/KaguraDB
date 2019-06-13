@@ -15,6 +15,23 @@ constexpr size_t NAME_LENGTH = 64;
 uint32_t encodeProperties(const Attribute& attr);
 tuple<ValueType, size_t, bool> decodeProperties(uint32_t);
 
+namespace BlockStruct {
+#define SCHEMA_BLOCK_SIZE       136
+#define ATTRIBUTE_BLOCK_SIZE    68        
+
+struct ShemaBlock {
+    uint32_t nextOfs;
+    uint32_t attrNum;
+    char     schemaName[64];
+    char     pk[64];
+};
+
+struct AttributeBlock {
+    char     name[64];
+    uint32_t properties;
+};
+}
+
 }
 
 #endif

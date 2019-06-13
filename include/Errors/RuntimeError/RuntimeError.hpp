@@ -4,6 +4,7 @@
 enum class REType: unsigned int {
     overflow = 100,
     timeout = 200,
+    notfound = 400,
     unknow = 500
 };
 class RuntimeError: public BaseError {
