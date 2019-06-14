@@ -162,8 +162,9 @@ Token Lexer::nextToken() {
             skipChars(tokenLen);
             return Token(stof(string(p, q)), cnl, cnc);
         }
+        int intval = std::stoi(string(p, q));
         skipChars(tokenLen);
-        return Token(stoi(string(p, q)), cnl, cnc);
+        return Token(intval, cnl, cnc);
     } else if (*p == '\'' || *p == '\"') {
         int tokenLen = 1;
         auto q = p + 1;

@@ -6,8 +6,7 @@
 #include "CatalogManager/CatalogManager.hpp"
 #include "BufferManager/BufferManager.hpp"
 namespace RM {
-using Records = vector<Record>;
-using Predicates = vector<Predicate>;
+
 struct RecordBlockHeader {
     uint32_t nOfs;
     uint32_t pOfs;

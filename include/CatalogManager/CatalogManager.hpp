@@ -23,7 +23,7 @@ void createIndex(const string& indexName, const string& tableName,
 void dropIndex(const string&);
 
 bool checkPredicates(const string& tableName, 
-            const vector<Predicate>& predicates);
+            const Predicates& predicates);
 
 bool hasSchema(const string& tableName);
 

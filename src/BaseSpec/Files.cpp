@@ -7,6 +7,6 @@ namespace FSpec{
     string genTableName(const string& tablename) { return dirname + "sql_" + tablename + ".tbl"; }
 
     string genIndexName(const string& tablename, const string& pk) { 
-        return dirname + "sql_" + tablename + pk + ".idx";
+        return dirname + "sql_" + tablename + "_" + pk + ".idx";
     }
 }

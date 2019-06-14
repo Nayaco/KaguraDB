@@ -1,10 +1,7 @@
 #ifndef TOKEN_HPP
 #define TOKEN_HPP
-#include <string>
-#include <tuple>
+#include "Common.hpp"
 namespace Syntax {
-
-using namespace std;
 
 enum class Keyword: int {
     QUIT            = 0,
@@ -53,9 +50,9 @@ enum class TokenType {
     floating,
     string
 };
-union TokenValue {
+struct TokenValue {
     Keyword keyval;
-    string* strval;
+    string  strval;
     Symbol  symval;
     int     intval;
     float   floatval;
@@ -71,6 +68,7 @@ public:
     TokenType typ() const;
     TokenValue val() const;
     tuple<int, int> pos() const;
+    string toString() const;
     ~Token();
 private:
     TokenType  type;

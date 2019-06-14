@@ -174,7 +174,42 @@ int deleteRecord(SchemaInstance schema,
 
 int deleteRecord(const string& tableName, 
     const vector<int>& offsets) {
-    return 0;
+    if(!hasTable(tableName)) 
+        throw RuntimeError(REType::notfound, "table not exists");
+    auto filename = FSpec::genTableName(tableName);
+    int tOfs;
+    int recordNum;
+    int delNum = 0;
+    
+    // table header begin 
+    FSpec::Meta::TableHeader tHeader{ };
+    auto blk_0 = CS::getBlock(CS::makeUID(filename, 0));
+    blk_0->read(reinterpret_cast<char*>(&tHeader), 0, sizeof(tHeader));
+    tOfs = tHeader.startOffset;
+    recordNum = tHeader.recordNum;
+    // table header end
+    
+    // record begin
+    for(auto iOfs: offsets) {
+        Record record;
+        tOfs = iOfs;
+        // blk header
+        auto blk_k = CS::getBlock(CS::makeUID(filename, tOfs));
+        RecordBlockHeader rblkHeader { };
+        blk_k->read(reinterpret_cast<char*>(&rblkHeader), 0, 8);
+        if(rblkHeader.nOfs & DELETED_MARK) {
+            continue;
+        }
+        delNum++;
+        rblkHeader.nOfs |= DELETED_MARK;
+        blk_k->write(reinterpret_cast<char*>(&rblkHeader), 0, 8);
+        // blk header end
+    }
+    // record end
+    tHeader.recordNum -= delNum;
+    if(tHeader.recordNum == 0) tHeader.startOffset = 0;
+    blk_0->write(reinterpret_cast<char*>(&tHeader), 0, sizeof(tHeader));
+    return delNum;
 }
 
 Records selectRecords(SchemaInstance schema,
@@ -239,7 +274,58 @@ Records selectRecords(SchemaInstance schema,
 Records selectRecordsOfOffset(SchemaInstance schema, 
     const Predicates& predicates, 
     const vector<int>& offsets) {
-    return Records{};
+    if(!hasTable(schema->tableName)) 
+        throw RuntimeError(REType::notfound, "table not exists");
+    auto filename = FSpec::genTableName(schema->tableName);
+    int tOfs;
+    int recordNum;
+    int perblkNum = recordBinarySize(schema);
+    Records records { };
+
+    // table header begin 
+    FSpec::Meta::TableHeader tHeader{ };
+    auto blk_0 = CS::getBlock(CS::makeUID(filename, 0));
+    blk_0->read(reinterpret_cast<char*>(&tHeader), 0, sizeof(tHeader));
+    recordNum = tHeader.recordNum;
+    // table header end
+    
+    // record begin
+    for(auto iOfs: offsets) {
+        auto innerOffset = 0;
+        Record record;
+        tOfs = iOfs;
+        // blk header
+        auto blk_k = CS::getBlock(CS::makeUID(filename, tOfs));
+        RecordBlockHeader rblkHeader { };
+        blk_k->read(reinterpret_cast<char*>(&rblkHeader), innerOffset, 8);
+        innerOffset += 8;
+        if(rblkHeader.nOfs & DELETED_MARK) {
+            continue;
+        }
+        // blk header end
+        auto blk = CS::getBlock(CS::makeUID(filename, tOfs));
+        for(auto i = 0; i < schema->attrs.size(); ++i) {
+            Value value(schema->attrs[i]);
+            if(innerOffset + schema->attrs[i].size() > BLOCK_SIZE) {
+                innerOffset = 0;
+                tOfs += 1;
+                blk = CS::getBlock(CS::makeUID(filename, tOfs));
+            }
+            blk->read(value.val(), innerOffset, value.size());
+            innerOffset += value.size();
+            record.emplace_back(std::move(value));
+        }
+        int rselect = 1;
+        for(auto i = 0; i < predicates.size(); ++i) {
+            if(!(rselect = satisfy(schema, record, predicates[i]))) 
+                break;
+        }
+        if(rselect) {
+            records.emplace_back(record);
+        }
+    }
+    // record end
+    return records;
 }
 
 Records project(const Records& records, 

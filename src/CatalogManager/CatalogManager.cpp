@@ -155,4 +155,22 @@ SchemaInstance getSchema(const string& tableName) {
 }
 
 
+bool checkPredicates(const string& tableName, 
+            const Predicates& predicates) {
+    auto schema = getSchema(tableName);
+    for(auto i = 0; i < predicates.size(); ++i) {
+        for(auto j = 0; j < schema->attrs.size(); ++j) {
+            if(schema->attrs[j].name == predicates[i].attrName) {
+                break;
+            }
+            if(j == schema->attrs.size() -1 && 
+                schema->attrs[j].name != predicates[i].attrName){
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
+
 }

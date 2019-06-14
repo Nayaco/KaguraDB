@@ -23,7 +23,7 @@ Token::Token(const string& str, const TokenType type, const int l, const int c)
     :l(l), c(c), type(type)
 {
     if(type == TokenType::identifier || type == TokenType::string)
-        value.strval = new string(str);
+        value.strval = str;
     else
         throw std::logic_error("illegal TokenType");
 }
@@ -32,12 +32,32 @@ TokenType Token::typ() const { return type; }
 
 TokenValue Token::val() const { return value; }
 
-tuple<int, int> Token::pos() const { return make_tuple(l, c); }
+tuple<int, int> Token::pos() const { return std::make_tuple(l, c); }
 
-Token::~Token() {
-    if(type == TokenType::identifier || type == TokenType::string)
-        delete value.strval;
+string Token::toString() const {
+    switch (type) {
+        case TokenType::floating: {
+            return "Float:" + std::to_string(value.floatval);
+        }
+        case TokenType::integer: {
+            return "Interger:" + std::to_string(value.intval);
+        }
+        case TokenType::string : {
+            return "String:" + value.strval;
+        }
+        case TokenType::identifier : {
+            return "Indentifier:" + value.strval;
+        }
+        case TokenType::keyword : {
+            return "Keyword:" + string(mapKeywordToString(value.keyval));
+        }
+        case TokenType::symbol : {
+            return "Symbol:" + string(mapSymbolToString(value.symval));
+        }
+    }
 }
+
+Token::~Token() { }
 
 static const char *keywords[] = {
     "quit"   , "execfile", "and"  , "or"    , "on"    ,
