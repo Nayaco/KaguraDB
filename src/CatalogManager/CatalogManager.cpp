@@ -84,7 +84,10 @@ void createTable(const string& tableName, const string& pk,
         throw SQLError("Catalog Error: create table failed, primarykey do not exist");
     }
 
-    auto writestr = [](const char* src, char* dest) { memcpy(dest, src, 64); };
+    auto writestr = [](const char* src, char* dest, int len) { 
+        memset(dest, 0, 64);
+        memcpy(dest, src, len); 
+    };
     auto catalogName = FSpec::genCatalogName();
     uint32_t tOfs = cHeader.blockNum;
     
@@ -107,8 +110,8 @@ void createTable(const string& tableName, const string& pk,
     BlockStruct::ShemaBlock schemablk;
     schemablk.nextOfs = 0;
     schemablk.attrNum = _attrs.size();
-    writestr(tableName.c_str(), schemablk.schemaName);
-    writestr(pk.c_str(), schemablk.pk);
+    writestr(tableName.c_str(), schemablk.schemaName, tableName.length());
+    writestr(pk.c_str(), schemablk.pk, pk.length());
     auto blk = CS::setBlock(makeUID(catalogName, tOfs),
         reinterpret_cast<char*>(&schemablk), innerOffset, SCHEMA_BLOCK_SIZE);
     innerOffset += SCHEMA_BLOCK_SIZE;
@@ -116,12 +119,13 @@ void createTable(const string& tableName, const string& pk,
     // initial schemablock attributes begin
     for(auto attr: _attrs) {
         BlockStruct::AttributeBlock attributeblk;
-        writestr(attr.name.c_str(), attributeblk.name);
+        writestr(attr.name.c_str(), attributeblk.name, attr.name.length());
         attributeblk.properties = encodeProperties(attr);
         blk->write(reinterpret_cast<char*>(&attributeblk), 
             innerOffset, ATTRIBUTE_BLOCK_SIZE);
         innerOffset += ATTRIBUTE_BLOCK_SIZE;
     }
+    blk->sync(true);
     // initial schemablock attributes end
     auto schemaInstance = std::make_shared<Schema>();
     schemaInstance->tableName = tableName;

@@ -19,6 +19,8 @@
 #include <cstdlib>
 #include <cstring>
 #include <memory>
+#include <algorithm>
+#include <iomanip>
 
 #include <cassert>
 
@@ -35,6 +37,7 @@ using std::list;
 using std::vector;
 using std::shared_ptr;
 using std::tuple;
+using std::stringstream;
 
 constexpr size_t BLOCK_SIZE = 4096;
 #endif

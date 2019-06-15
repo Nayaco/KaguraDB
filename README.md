@@ -29,3 +29,5 @@
 - [ ] ...
 
 ## Introduction
+
+create table Test2 (testpk int, test1 char(20), test2 float, primary key(testpk));

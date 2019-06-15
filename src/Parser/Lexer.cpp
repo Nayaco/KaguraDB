@@ -140,6 +140,8 @@ Token Lexer::nextToken() {
             return Token(Keyword::UNIQUE, cnl, cnc);
         } else if (str_temp == "values") {
             return Token(Keyword::VALUES, cnl, cnc);
+        } else if (str_temp == "primary") {
+            return Token(Keyword::PRIMARY, cnl, cnc);
         } else {
             return Token(str, TokenType::identifier, cnl, cnc);
         }
@@ -158,9 +160,12 @@ Token Lexer::nextToken() {
         };
         getNum();
         if (q != curLine.end() && *q == '.') {
+            tokenLen++;
+            q++;
             getNum();
+            float floatval = stof(string(p, q));
             skipChars(tokenLen);
-            return Token(stof(string(p, q)), cnl, cnc);
+            return Token(floatval, cnl, cnc);
         }
         int intval = std::stoi(string(p, q));
         skipChars(tokenLen);
