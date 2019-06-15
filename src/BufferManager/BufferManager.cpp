@@ -57,8 +57,8 @@ void createBlockSet(const string& setName, const FileType type){
         Meta::IndexHeader header;
         header.filetype = static_cast<uint32_t>(type);
         header.blockNum = 1;
+        header.startOffset = 0;
         header.blockOffset = BLOCK_SIZE;
-        header.rootOffset = 0;
         blkInstance->write(reinterpret_cast<const char*>(&header), 0 , sizeof(header));
         break;
     }
@@ -80,13 +80,22 @@ void deleteBlockSet(const string& setName) {
 }
 
 void synchronize() {
-    for(auto iter = cache.begin(); iter != cache.end(); ++iter) {
+    // for(auto iter = cache.begin(); iter != cache.end(); ++iter) {
+    //     auto blk = *iter;
+    //     if(blk->isDirty()) {
+    //         blk->sync(true);
+    //     }
+    //     if(blk->isDel()) {
+    //         cache.erase(iter);
+    //     }
+    // }
+    for(auto iter = cache.rbegin(); iter != cache.rend(); ++iter) {
         auto blk = *iter;
         if(blk->isDirty()) {
             blk->sync(true);
-        }
+        } 
         if(blk->isDel()) {
-            cache.erase(iter);
+            cache.erase(std::next(iter).base());
         }
     }
 }
@@ -100,8 +109,8 @@ void maintain() {
             }
             if(blk->isDirty()) {
                 blk->sync(true);
-                cache.erase(std::next(iter).base());
             }
+            cache.erase(std::next(iter).base());
             break;
         }
     }

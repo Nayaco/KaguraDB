@@ -34,6 +34,7 @@ struct Attribute {
             return NUL_SIZE;
         }
         }
+        return NUL_SIZE;
     }
     string toString() {
         std::stringstream ss;
@@ -49,6 +50,10 @@ struct Attribute {
         }
         case ValueType::CHAR: {
             ss<<"CHAR("<<charLength<<")"<<" ";
+            break;
+        }
+        case ValueType::NUL: {
+            ss<<"NULL";
             break;
         }
         }
@@ -85,6 +90,7 @@ struct Value {
             return nullptr;
         }
         }
+        return nullptr;
     }
 
     char *val(){
@@ -102,6 +108,7 @@ struct Value {
             return nullptr;
         }
         }
+        return nullptr;
     }
 
     size_t size() const {
@@ -119,6 +126,7 @@ struct Value {
             return NUL_SIZE;
         }
         }
+        return NUL_SIZE;
     }
 
     string toString() const {
@@ -160,7 +168,11 @@ struct Value {
         case ValueType::CHAR: {
             return strcmp(charval, rhs.charval) == 0;
         }
+        case ValueType::NUL: {
+            return false;
         }
+        }
+        return false;
     }
 
     bool operator !=(const Value& rhs) const {
@@ -190,7 +202,11 @@ struct Value {
         case ValueType::CHAR: {
             return strcmp(charval, rhs.charval) < 0;
         }
+        case ValueType::NUL: {
+            return false;
         }
+        }
+        return false;
     }
 
     bool operator >(const Value& rhs) const {
@@ -210,7 +226,11 @@ struct Value {
         case ValueType::CHAR: {
             return strcmp(charval, rhs.charval) > 0;
         }
+        case ValueType::NUL: {
+            return false;
         }
+        }
+        return false;
     }
 
     bool operator <=(const Value& rhs) const {

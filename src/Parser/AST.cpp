@@ -99,16 +99,17 @@ void QuitStatement::call() const {
     throw ASTException::SIGQUIT;
 }
 
-void CreateIndexStatement::setIndexName(const string& _indexName) {}
-void CreateIndexStatement::setTableName(const string& _tableName) {}
-void CreateIndexStatement::setAttrName(const string& _attrName) {}
-void CreateIndexStatement::call() const {}
+void CreateIndexStatement::setIndexName(const string& _indexName) { name = _indexName; }
+void CreateIndexStatement::setTableName(const string& _tableName) { tableName = _tableName; }
+void CreateIndexStatement::setAttrName(const string& _attrName) { attrName = _attrName; }
+void CreateIndexStatement::call() const { 
+    API::createIndex(name, tableName, attrName);
+}
 
-void DropIndexStatement::setIndexName(const string& _indexName) {}
-void DropIndexStatement::call() const {};
-
-
-
+void DropIndexStatement::setIndexName(const string& _indexName) { name = _indexName; }
+void DropIndexStatement::call() const {
+    API::dropIndex(name);
+};
 
 }
 }

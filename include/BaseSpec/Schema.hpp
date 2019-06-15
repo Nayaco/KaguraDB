@@ -24,6 +24,7 @@ struct Index {
 
 using Record = vector<Value>;
 using SchemaInstance = shared_ptr<Schema>;
+using IndexInstance = shared_ptr<Index>;
 using Records = vector<Record>;
 using Predicates = vector<Predicate>;
 

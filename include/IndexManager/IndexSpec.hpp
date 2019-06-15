@@ -18,13 +18,14 @@ struct nodeBlockStruct {
 nodeBlockStruct* genLeafNodeBlock(
             int kn, 
             int parent, 
-            vector<CS::BlockUID>& vals
+            const vector<Value>& keys,
+            const vector<CS::BlockUID>& vals
             );
 nodeBlockStruct* genInnerNodeBlock(
             int kn, 
             int parent, 
-            vector<Value>& keys,
-            vector<int>& children
+            const vector<Value>& keys,
+            const vector<int>& children
             );
 
 }

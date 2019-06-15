@@ -37,6 +37,7 @@ using std::list;
 using std::vector;
 using std::shared_ptr;
 using std::tuple;
+using std::pair;
 using std::stringstream;
 
 constexpr size_t BLOCK_SIZE = 4096;

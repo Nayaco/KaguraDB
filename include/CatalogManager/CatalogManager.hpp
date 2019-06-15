@@ -9,7 +9,7 @@ namespace CM {
 
 using namespace CS;
 extern unordered_map<string, SchemaInstance> schemas;
-extern unordered_map<string, Index> indices;
+extern unordered_map<string, IndexInstance> indices;
 
 void init();
 void exit();
@@ -20,17 +20,22 @@ void dropTable(const string&);
 
 void createIndex(const string& indexName, const string& tableName, 
             const string& key);
-void dropIndex(const string&);
+void dropIndex(const string& indexName);
 
 bool checkPredicates(const string& tableName, 
             const Predicates& predicates);
 
 bool hasSchema(const string& tableName);
 
+bool hasIndex(const string& indexName);
 bool hasIndex(const string& tableName,
                 const string& attribute);
 
 SchemaInstance getSchema(const string& tableName);
+
+IndexInstance getIndex(const string& indexName);
+IndexInstance getIndex(const string& tableName,
+                const string& attribute);
 
 }
 #endif

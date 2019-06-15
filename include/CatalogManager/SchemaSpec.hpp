@@ -18,6 +18,7 @@ tuple<ValueType, size_t, bool> decodeProperties(uint32_t);
 namespace BlockStruct {
 #define SCHEMA_BLOCK_SIZE       136
 #define ATTRIBUTE_BLOCK_SIZE    68        
+#define INDEX_BLOCK_SIZE        196
 
 struct ShemaBlock {
     uint32_t nextOfs;
@@ -30,6 +31,14 @@ struct AttributeBlock {
     char     name[64];
     uint32_t properties;
 };
+
+struct IndexBlock {
+    uint32_t nextOfs;
+    char     indexName[64];
+    char     schemaName[64];
+    char     key[64];
+};
+
 }
 
 }

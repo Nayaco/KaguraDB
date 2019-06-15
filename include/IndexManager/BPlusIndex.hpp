@@ -11,8 +11,7 @@ using Key = Value;
 using Pos = CS::BlockUID;
 struct Node {
     Attribute attr;
-    string filename;
-    int kn;
+    const static int kn = 5;
     vector<Key> k;
     int parent;
     vector<int> child;
@@ -29,15 +28,21 @@ struct Node {
 
 struct BPTree {
     Node* root;
-    int   knMax;
+    const static int knMax = 5;
+    map<int, Node*> stack;
     string filename;
     int   nodeNum;
     Attribute pk;
-    BPTree(const string& indexName, const Attribute& pk, const string& filename);
+    BPTree(const string& _filename, const Attribute& _pk);
     ~BPTree();
+    Node* getNode(int ofs);
+    Node* getLeftMost(Node*);
+    Node* mergeNode(Node* node1, Node* node2);
+    pair<Node*, Node*> splitNode(Node* node1);
     void recursiveDel(Node* node);
     Pos find(const Key&);
     void insert(const Key&, const Pos& val);
+    void insertInto(Node* current, const Key&, const Pos val);
     void remove(const Key&);
 };
 

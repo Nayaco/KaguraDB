@@ -55,6 +55,9 @@ Token Lexer::nextToken() {
     } else if (*p == '*') {
         skipChars(1);
         return Token(Symbol::ASTER, cnl, cnc);
+    } else if (*p == '=') {
+        skipChars(1);
+        return Token(Symbol::EQ, cnl, cnc);
     } else if (*p == '<') {
         skipChars(1);
         if(p!= curLine.end()) {

@@ -1,0 +1,157 @@
+[
+{
+  "directory": "/home/hanabi/workbench/project-2019/database_course/KaguraDB/build",
+  "command": "/usr/bin/g++   -I../include   -Wall -O3 -DNDEBUG   -std=gnu++11 -o CMakeFiles/main.dir/src/API/API.cpp.o -c /home/hanabi/workbench/project-2019/database_course/KaguraDB/src/API/API.cpp",
+  "file": "/home/hanabi/workbench/project-2019/database_course/KaguraDB/src/API/API.cpp"
+},
+
+{
+  "directory": "/home/hanabi/workbench/project-2019/database_course/KaguraDB/build",
+  "command": "/usr/bin/g++   -I../include   -Wall -O3 -DNDEBUG   -std=gnu++11 -o CMakeFiles/main.dir/src/AppContainer/AppContainer.cpp.o -c /home/hanabi/workbench/project-2019/database_course/KaguraDB/src/AppContainer/AppContainer.cpp",
+  "file": "/home/hanabi/workbench/project-2019/database_course/KaguraDB/src/AppContainer/AppContainer.cpp"
+},
+
+{
+  "directory": "/home/hanabi/workbench/project-2019/database_course/KaguraDB/build",
+  "command": "/usr/bin/g++   -I../include   -Wall -O3 -DNDEBUG   -std=gnu++11 -o CMakeFiles/main.dir/src/AppContainer/REHL.cpp.o -c /home/hanabi/workbench/project-2019/database_course/KaguraDB/src/AppContainer/REHL.cpp",
+  "file": "/home/hanabi/workbench/project-2019/database_course/KaguraDB/src/AppContainer/REHL.cpp"
+},
+
+{
+  "directory": "/home/hanabi/workbench/project-2019/database_course/KaguraDB/build",
+  "command": "/usr/bin/g++   -I../include   -Wall -O3 -DNDEBUG   -std=gnu++11 -o CMakeFiles/main.dir/src/BaseSpec/Files.cpp.o -c /home/hanabi/workbench/project-2019/database_course/KaguraDB/src/BaseSpec/Files.cpp",
+  "file": "/home/hanabi/workbench/project-2019/database_course/KaguraDB/src/BaseSpec/Files.cpp"
+},
+
+{
+  "directory": "/home/hanabi/workbench/project-2019/database_course/KaguraDB/build",
+  "command": "/usr/bin/g++   -I../include   -Wall -O3 -DNDEBUG   -std=gnu++11 -o CMakeFiles/main.dir/src/BufferManager/Block.cpp.o -c /home/hanabi/workbench/project-2019/database_course/KaguraDB/src/BufferManager/Block.cpp",
+  "file": "/home/hanabi/workbench/project-2019/database_course/KaguraDB/src/BufferManager/Block.cpp"
+},
+
+{
+  "directory": "/home/hanabi/workbench/project-2019/database_course/KaguraDB/build",
+  "command": "/usr/bin/g++   -I../include   -Wall -O3 -DNDEBUG   -std=gnu++11 -o CMakeFiles/main.dir/src/BufferManager/BufferManager.cpp.o -c /home/hanabi/workbench/project-2019/database_course/KaguraDB/src/BufferManager/BufferManager.cpp",
+  "file": "/home/hanabi/workbench/project-2019/database_course/KaguraDB/src/BufferManager/BufferManager.cpp"
+},
+
+{
+  "directory": "/home/hanabi/workbench/project-2019/database_course/KaguraDB/build",
+  "command": "/usr/bin/g++   -I../include   -Wall -O3 -DNDEBUG   -std=gnu++11 -o CMakeFiles/main.dir/src/BufferManager/FileService.cpp.o -c /home/hanabi/workbench/project-2019/database_course/KaguraDB/src/BufferManager/FileService.cpp",
+  "file": "/home/hanabi/workbench/project-2019/database_course/KaguraDB/src/BufferManager/FileService.cpp"
+},
+
+{
+  "directory": "/home/hanabi/workbench/project-2019/database_course/KaguraDB/build",
+  "command": "/usr/bin/g++   -I../include   -Wall -O3 -DNDEBUG   -std=gnu++11 -o CMakeFiles/main.dir/src/CatalogManager/CatalogManager.cpp.o -c /home/hanabi/workbench/project-2019/database_course/KaguraDB/src/CatalogManager/CatalogManager.cpp",
+  "file": "/home/hanabi/workbench/project-2019/database_course/KaguraDB/src/CatalogManager/CatalogManager.cpp"
+},
+
+{
+  "directory": "/home/hanabi/workbench/project-2019/database_course/KaguraDB/build",
+  "command": "/usr/bin/g++   -I../include   -Wall -O3 -DNDEBUG   -std=gnu++11 -o CMakeFiles/main.dir/src/CatalogManager/SchemaSpec.cpp.o -c /home/hanabi/workbench/project-2019/database_course/KaguraDB/src/CatalogManager/SchemaSpec.cpp",
+  "file": "/home/hanabi/workbench/project-2019/database_course/KaguraDB/src/CatalogManager/SchemaSpec.cpp"
+},
+
+{
+  "directory": "/home/hanabi/workbench/project-2019/database_course/KaguraDB/build",
+  "command": "/usr/bin/g++   -I../include   -Wall -O3 -DNDEBUG   -std=gnu++11 -o CMakeFiles/main.dir/src/IndexManager/BPlusIndex.cpp.o -c /home/hanabi/workbench/project-2019/database_course/KaguraDB/src/IndexManager/BPlusIndex.cpp",
+  "file": "/home/hanabi/workbench/project-2019/database_course/KaguraDB/src/IndexManager/BPlusIndex.cpp"
+},
+
+{
+  "directory": "/home/hanabi/workbench/project-2019/database_course/KaguraDB/build",
+  "command": "/usr/bin/g++   -I../include   -Wall -O3 -DNDEBUG   -std=gnu++11 -o CMakeFiles/main.dir/src/IndexManager/BPlusIndex_K.cpp.o -c /home/hanabi/workbench/project-2019/database_course/KaguraDB/src/IndexManager/BPlusIndex_K.cpp",
+  "file": "/home/hanabi/workbench/project-2019/database_course/KaguraDB/src/IndexManager/BPlusIndex_K.cpp"
+},
+
+{
+  "directory": "/home/hanabi/workbench/project-2019/database_course/KaguraDB/build",
+  "command": "/usr/bin/g++   -I../include   -Wall -O3 -DNDEBUG   -std=gnu++11 -o CMakeFiles/main.dir/src/IndexManager/IndexManager.cpp.o -c /home/hanabi/workbench/project-2019/database_course/KaguraDB/src/IndexManager/IndexManager.cpp",
+  "file": "/home/hanabi/workbench/project-2019/database_course/KaguraDB/src/IndexManager/IndexManager.cpp"
+},
+
+{
+  "directory": "/home/hanabi/workbench/project-2019/database_course/KaguraDB/build",
+  "command": "/usr/bin/g++   -I../include   -Wall -O3 -DNDEBUG   -std=gnu++11 -o CMakeFiles/main.dir/src/IndexManager/IndexSpec.cpp.o -c /home/hanabi/workbench/project-2019/database_course/KaguraDB/src/IndexManager/IndexSpec.cpp",
+  "file": "/home/hanabi/workbench/project-2019/database_course/KaguraDB/src/IndexManager/IndexSpec.cpp"
+},
+
+{
+  "directory": "/home/hanabi/workbench/project-2019/database_course/KaguraDB/build",
+  "command": "/usr/bin/g++   -I../include   -Wall -O3 -DNDEBUG   -std=gnu++11 -o CMakeFiles/main.dir/src/Parser/AST.cpp.o -c /home/hanabi/workbench/project-2019/database_course/KaguraDB/src/Parser/AST.cpp",
+  "file": "/home/hanabi/workbench/project-2019/database_course/KaguraDB/src/Parser/AST.cpp"
+},
+
+{
+  "directory": "/home/hanabi/workbench/project-2019/database_course/KaguraDB/build",
+  "command": "/usr/bin/g++   -I../include   -Wall -O3 -DNDEBUG   -std=gnu++11 -o CMakeFiles/main.dir/src/Parser/Lexer.cpp.o -c /home/hanabi/workbench/project-2019/database_course/KaguraDB/src/Parser/Lexer.cpp",
+  "file": "/home/hanabi/workbench/project-2019/database_course/KaguraDB/src/Parser/Lexer.cpp"
+},
+
+{
+  "directory": "/home/hanabi/workbench/project-2019/database_course/KaguraDB/build",
+  "command": "/usr/bin/g++   -I../include   -Wall -O3 -DNDEBUG   -std=gnu++11 -o CMakeFiles/main.dir/src/Parser/Parser.cpp.o -c /home/hanabi/workbench/project-2019/database_course/KaguraDB/src/Parser/Parser.cpp",
+  "file": "/home/hanabi/workbench/project-2019/database_course/KaguraDB/src/Parser/Parser.cpp"
+},
+
+{
+  "directory": "/home/hanabi/workbench/project-2019/database_course/KaguraDB/build",
+  "command": "/usr/bin/g++   -I../include   -Wall -O3 -DNDEBUG   -std=gnu++11 -o CMakeFiles/main.dir/src/Parser/Token.cpp.o -c /home/hanabi/workbench/project-2019/database_course/KaguraDB/src/Parser/Token.cpp",
+  "file": "/home/hanabi/workbench/project-2019/database_course/KaguraDB/src/Parser/Token.cpp"
+},
+
+{
+  "directory": "/home/hanabi/workbench/project-2019/database_course/KaguraDB/build",
+  "command": "/usr/bin/g++   -I../include   -Wall -O3 -DNDEBUG   -std=gnu++11 -o CMakeFiles/main.dir/src/RecordManager/RecordManager.cpp.o -c /home/hanabi/workbench/project-2019/database_course/KaguraDB/src/RecordManager/RecordManager.cpp",
+  "file": "/home/hanabi/workbench/project-2019/database_course/KaguraDB/src/RecordManager/RecordManager.cpp"
+},
+
+{
+  "directory": "/home/hanabi/workbench/project-2019/database_course/KaguraDB/build",
+  "command": "/usr/bin/g++   -I../include   -Wall -O3 -DNDEBUG   -std=gnu++11 -o CMakeFiles/main.dir/src/RecordManager/RecordSpec.cpp.o -c /home/hanabi/workbench/project-2019/database_course/KaguraDB/src/RecordManager/RecordSpec.cpp",
+  "file": "/home/hanabi/workbench/project-2019/database_course/KaguraDB/src/RecordManager/RecordSpec.cpp"
+},
+
+{
+  "directory": "/home/hanabi/workbench/project-2019/database_course/KaguraDB/build",
+  "command": "/usr/bin/g++   -I../include   -Wall -O3 -DNDEBUG   -std=gnu++11 -o CMakeFiles/main.dir/src/main.cpp.o -c /home/hanabi/workbench/project-2019/database_course/KaguraDB/src/main.cpp",
+  "file": "/home/hanabi/workbench/project-2019/database_course/KaguraDB/src/main.cpp"
+},
+
+{
+  "directory": "/home/hanabi/workbench/project-2019/database_course/KaguraDB/build",
+  "command": "/usr/bin/g++   -I../include   -Wall -O3 -DNDEBUG   -std=gnu++11 -o CMakeFiles/main.dir/src/tests/ASTTest.cpp.o -c /home/hanabi/workbench/project-2019/database_course/KaguraDB/src/tests/ASTTest.cpp",
+  "file": "/home/hanabi/workbench/project-2019/database_course/KaguraDB/src/tests/ASTTest.cpp"
+},
+
+{
+  "directory": "/home/hanabi/workbench/project-2019/database_course/KaguraDB/build",
+  "command": "/usr/bin/g++   -I../include   -Wall -O3 -DNDEBUG   -std=gnu++11 -o CMakeFiles/main.dir/src/tests/BufferTest.cpp.o -c /home/hanabi/workbench/project-2019/database_course/KaguraDB/src/tests/BufferTest.cpp",
+  "file": "/home/hanabi/workbench/project-2019/database_course/KaguraDB/src/tests/BufferTest.cpp"
+},
+
+{
+  "directory": "/home/hanabi/workbench/project-2019/database_course/KaguraDB/build",
+  "command": "/usr/bin/g++   -I../include   -Wall -O3 -DNDEBUG   -std=gnu++11 -o CMakeFiles/main.dir/src/tests/CatalogTest.cpp.o -c /home/hanabi/workbench/project-2019/database_course/KaguraDB/src/tests/CatalogTest.cpp",
+  "file": "/home/hanabi/workbench/project-2019/database_course/KaguraDB/src/tests/CatalogTest.cpp"
+},
+
+{
+  "directory": "/home/hanabi/workbench/project-2019/database_course/KaguraDB/build",
+  "command": "/usr/bin/g++   -I../include   -Wall -O3 -DNDEBUG   -std=gnu++11 -o CMakeFiles/main.dir/src/tests/LexerTest.cpp.o -c /home/hanabi/workbench/project-2019/database_course/KaguraDB/src/tests/LexerTest.cpp",
+  "file": "/home/hanabi/workbench/project-2019/database_course/KaguraDB/src/tests/LexerTest.cpp"
+},
+
+{
+  "directory": "/home/hanabi/workbench/project-2019/database_course/KaguraDB/build",
+  "command": "/usr/bin/g++   -I../include   -Wall -O3 -DNDEBUG   -std=gnu++11 -o CMakeFiles/main.dir/src/tests/RecordTest.cpp.o -c /home/hanabi/workbench/project-2019/database_course/KaguraDB/src/tests/RecordTest.cpp",
+  "file": "/home/hanabi/workbench/project-2019/database_course/KaguraDB/src/tests/RecordTest.cpp"
+},
+
+{
+  "directory": "/home/hanabi/workbench/project-2019/database_course/KaguraDB/build",
+  "command": "/usr/bin/g++   -I../include   -Wall -O3 -DNDEBUG   -std=gnu++11 -o CMakeFiles/main.dir/src/tests/main.cpp.o -c /home/hanabi/workbench/project-2019/database_course/KaguraDB/src/tests/main.cpp",
+  "file": "/home/hanabi/workbench/project-2019/database_course/KaguraDB/src/tests/main.cpp"
+}
+]

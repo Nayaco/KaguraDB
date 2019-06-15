@@ -14,7 +14,7 @@ enum class FileType: uint32_t {
 
 string genCatalogName();
 string genTableName(const string& tablename);
-string genIndexName(const string& tablename, const string& pk);
+string genIndexName(const string& indexname);
 
 namespace Meta {
 struct CatalogHeader {
@@ -37,7 +37,7 @@ struct TableHeader {
 struct IndexHeader {
     uint32_t filetype;
     uint32_t blockNum;
-    uint32_t rootOffset;
+    uint32_t startOffset;
     uint32_t blockOffset;
 };
 }

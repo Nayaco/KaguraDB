@@ -1,6 +1,7 @@
 #include "API/API.hpp"
 #include "CatalogManager/CatalogManager.hpp"
 #include "RecordManager/RecordManager.hpp"
+#include "IndexManager/IndexManager.hpp"
 
 namespace API {
 void createTable(
@@ -22,11 +23,13 @@ void createIndex(
                 const string &tableName,
                 const string &attrName
 ) {
-    
+    CM::createIndex(indexName, tableName, attrName);
+    IM::createIndex(indexName);
 }
 
 void dropIndex(const string &indexName) {
-
+    IM::dropIndex(indexName);
+    CM::dropIndex(indexName);
 }
 
 tuple<SchemaInstance, Records> select(
