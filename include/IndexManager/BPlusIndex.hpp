@@ -42,8 +42,11 @@ struct BPTree {
     void recursiveDel(Node* node);
     Pos find(const Key&);
     void insert(const Key&, const Pos& val);
-    void insertInto(Node* current, const Key&, const Pos val);
     void remove(const Key&);
+};
+
+enum class BPTException {
+    NOTFOUND
 };
 
 }

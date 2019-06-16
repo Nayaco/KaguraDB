@@ -13,14 +13,23 @@ void init() {
 void exit() { }
 
 static bool satisfy(SchemaInstance schema, const Record& record, const Predicate& predicate) {
+    Predicate _predicate(predicate);
     for (auto i = 0; i < record.size(); ++i) {
-        if(predicate.attrName == schema->attrs[i].name) {
-            switch (predicate.op) {
-                case OpType::EQ:    return record[i] == predicate.value;
-                case OpType::GT:    return record[i] >  predicate.value;
-                case OpType::GTEQ:  return record[i] >= predicate.value;
-                case OpType::LT:    return record[i] <  predicate.value;
-                case OpType::LTEQ:  return record[i] <= predicate.value;
+        if(_predicate.attrName == schema->attrs[i].name) {
+            if(record[i].type == ValueType::FLOAT && _predicate.value.type == ValueType::INT) {
+                _predicate.value.floatval = static_cast<float>(_predicate.value.intval);
+                _predicate.value.type = ValueType::FLOAT;
+            }
+            if(record[i].type == ValueType::INT && _predicate.value.type == ValueType::FLOAT) {
+                _predicate.value.intval = static_cast<int>(_predicate.value.floatval);
+                _predicate.value.type = ValueType::INT;
+            }
+            switch (_predicate.op) {
+                case OpType::EQ:    return record[i] == _predicate.value;
+                case OpType::GT:    return record[i] >  _predicate.value;
+                case OpType::GTEQ:  return record[i] >= _predicate.value;
+                case OpType::LT:    return record[i] <  _predicate.value;
+                case OpType::LTEQ:  return record[i] <= _predicate.value;
             }
         }
     }
@@ -76,7 +85,7 @@ int insertRecord(const string& tableName,
     blk->write(reinterpret_cast<char*>(&rblkHeader), innerOffset, 8);
     innerOffset += 8;
     for(auto i = 0; i < schema->attrs.size(); ++i) {
-        if(record[i].type != schema->attrs[i].type)
+        if(record[i].type != schema->attrs[i].type && (record[i].type != ValueType::INT && schema->attrs[i].type != ValueType::FLOAT))
             throw SQLError("Record Error: field type not matches to schema");
         if(record[i].type == ValueType::CHAR && record[i].size() > schema->attrs[i].size())
             throw SQLError("Record Error: "+ string(record[i].val()) + 
@@ -86,8 +95,14 @@ int insertRecord(const string& tableName,
             tOfs += 1;
             blk = CS::setBlock(CS::makeUID(filename, tOfs));
         }
-        blk->write(record[i].val(), innerOffset, record[i].size());
-        innerOffset += schema->attrs[i].size();
+        if(record[i].type == ValueType::INT && schema->attrs[i].type == ValueType::FLOAT) {
+            auto vv = static_cast<float>(record[i].intval);
+            blk->write(reinterpret_cast<char*>(&vv), innerOffset, sizeof(float));
+            innerOffset += sizeof(float);
+        } else { 
+            blk->write(record[i].val(), innerOffset, record[i].size());
+            innerOffset += schema->attrs[i].size();
+        }
     }
     // record end
 }

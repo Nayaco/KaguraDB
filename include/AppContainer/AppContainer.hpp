@@ -3,6 +3,7 @@
 #include "BufferManager/BufferManager.hpp"
 #include "CatalogManager/CatalogManager.hpp"
 #include "RecordManager/RecordManager.hpp"
+#include "IndexManager/IndexManager.hpp"
 #include "AppContainer/REHL.hpp"
 namespace App {
 void RUN();

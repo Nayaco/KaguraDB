@@ -21,6 +21,8 @@
 #include <memory>
 #include <algorithm>
 #include <iomanip>
+#include <ctime>
+#include <chrono>
 
 #include <cassert>
 
@@ -39,6 +41,7 @@ using std::shared_ptr;
 using std::tuple;
 using std::pair;
 using std::stringstream;
+using Clock = std::chrono::system_clock;
 
 constexpr size_t BLOCK_SIZE = 4096;
 #endif

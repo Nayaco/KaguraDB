@@ -15,8 +15,15 @@ void DropTableStatement::call() const { API::dropTable(name); }
 void SelectStatement::setTableName(const string& _tableName) { tableName = _tableName; }
 void SelectStatement::addAttribute(const string& _attribute) { attributes.emplace_back(_attribute); }
 void SelectStatement::addPredicate(const Predicate& _predicate) { predicates.emplace_back(_predicate); }
+
 string SelectStatement::callT() {
+    auto now1 = clock();
+    
     auto res = API::select(attributes, tableName, predicates);
+    
+    auto now2 = clock();
+    
+
     auto& schema = std::get<0>(res);
     auto& records = std::get<1>(res);
     auto attrNames(attributes);
@@ -63,6 +70,10 @@ string SelectStatement::callT() {
         ss << std::endl;
     }
     outputEdge();
+    // auto milliseconds1 = std::chrono::duration_cast<std::chrono::milliseconds>(fraction1);
+    // auto milliseconds2 = std::chrono::duration_cast<std::chrono::milliseconds>(fraction2);
+    ss << records.size() <<" records are selected" << std::endl;
+    ss << "select done in " << ((float)(now2 - now1))/CLOCKS_PER_SEC << " seconds"<< std::endl;
     return ss.str();
 }
 void SelectStatement::call() const {
